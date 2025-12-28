@@ -1,0 +1,1195 @@
+// =========================================================
+// LOADING SCREEN - Hide after 0.5 seconds
+// =========================================================
+window.addEventListener('load', function() {
+    const loadingScreen = document.getElementById('loading-screen');
+    setTimeout(() => {
+        if (loadingScreen) {
+            loadingScreen.classList.add('fade-out');
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 300);
+        }
+    }, 500);
+});
+
+// =========================================================
+// GLOBAL TRANSLATIONS
+// =========================================================
+const translations = {
+    pageTitle: {
+        km: 'សិរីមង្គលអាពាហ៍ពិពាហ៍ | ជិន សុវណ្ណរតនៈ​  & គឹម ច័ន្ទដាហ្សូនីតា',
+        en: 'Wedding Ceremony | Chin Sovannrotanak & Kim Chandajonita'
+    },
+    entranceRespect: { km: 'សូមគោរពអញ្ជើញ', en: 'Respectfully invite' },
+    entranceCeremony: { km: 'សិរីមង្គលអាពាហ៍ពិពាហ៍', en: 'Auspicious Wedding Ceremony' },
+    enterInvitation: { km: 'បើកសំបុត្រអាពាហ៍ពិពាហ៍', en: 'Open the invitation' },
+    mainCeremony: { km: 'សិរីមង្គលអាពាហ៍ពិពាហ៍', en: 'Auspicious Wedding Ceremony' },
+    parentTitleFemale: { km: 'លោកស្រី ជិន សុភ័ក្រនារី', en: 'Mrs. CHIN Sophakneary' },
+    parentNamePlaceholder1: { km: 'ជិន សុភ័ក្រនារី', en: 'CHIN Sophakneary' },
+    parentNamePlaceholder2: { km: 'គឹម សាវឿន', en: 'KIM Savoeun' },
+    parentNamePlaceholder3: { km: 'សំ​ សុផារី', en: 'SAM Sophary' },
+    parentTitle2: { km: 'ឯកឧត្តម គឹម សាវឿន', en: 'H.E. KIM Savoeun' },
+    parentTitle3: { km: 'លោកជំទាវ សំ​ សុផារី', en: 'H.E. SAM Sophary' },
+    honorInvite: { km: 'មានកិត្តិយសសូមគោរពអញ្ជើញ', en: 'Our great honor to respectfully invite' }, //////
+    invitationBody: {
+        km: 'សម្ដេច ទ្រង់ ឯកឧត្តម លោកជំទាវ ​លោកអ្នកឧកញ៉ា អ្នកឧកញ៉ា ឧកញ៉ា លោក លោកស្រី អ្នកនាងកញ្ញា និងប្រិយមិត្ត ចូលរួមជាអធិបតី និងជាភ្ញៀវកិត្តិយស ដើម្បីប្រសិទ្ធពរជ័យ សិរីសួស្ដីជ័យមង្គលក្នុងពិធីមង្គលអាពាហ៍ពិពាហ៍ កូនប្រុស កូនស្រីរបស់យើងខ្ញុំ',
+        en: 'We are deeply honored to have Samdech, His Excellency, Lok Chumteav, Lok Oknha, Neak Oknha, Oknha, ladies and gentlemen, and our cherished friends join us as officiants and distinguished guests to bless our son and daughter with a life filled with happiness, health, and everlasting love.'
+    },
+    groomLabel: { km: 'កូនប្រុសនាម', en: 'Groom' },
+    brideLabel: { km: 'កូនស្រីនាម', en: 'Bride' },
+    brideName: { km: 'គឹម ', en: 'Kim ' },
+    brideName1: { km: 'គឹម ច័ន្ទដាហ្សូនីតា', en: 'Kim Chandajonita' },//////
+    groomName: { km: 'ជិន', en: '' }, 
+    groomName1: { km: 'ជិន សុវណ្ណរតនៈ', en: 'Chin Sovannrotanak' },//////
+    takingPlace: { km: 'ដែលប្រព្រឹត្តទៅនៅ', en: 'which will take place on' },
+    weddingDate: { km: 'ថ្ងៃសៅរ៍ - ២៨ - មីនា - ២០២៦', en: 'Saturday - 28 - March - 2026' },
+    venueName: { km: 'ដឹព្រេមៀ សេនធ័រ សែនសុខ (អាគារ D&E)', en: 'At The Premier Center Sen Sok (Building I)' },
+    startTime: { km: 'ចាប់ពីម៉ោង ០៦:៣០​ ព្រឹក តទៅ​!', en: 'Starting from 6:30 am' },
+    locationTitle: { km: 'ទីតាំងកម្មវិធី', en: 'Wedding Venue' },
+    scanMap: { km: 'ស្កេនទីនេះដើម្បីមើលទីតាំង', en: 'Scan to check the map!' },
+    viewMap: { km: 'មើលទីផែនទី', en: 'View Map' },
+    agendaTitle: { km: 'កម្មវិធីមង្គលអាពាហ៍ពិពាហ៍', en: 'Wedding Ceremony' },
+    agendaDateMorning: { km: 'ព្រឹក រសៀល (ថ្ងៃសៅរ៍ D)', en: 'Morning & Afternoon (Saturday D)' },
+    agendaPeriodMorning: { km: 'ពេលព្រឹក ( អាគារ I)', en: 'Morning (Building I)' },
+    agendaPeriodEvening: { km: 'ពេលល្ងាច ( អាគារ I)', en: 'Evening (Building I)' },
+    time6am: { km: '៦:០០នាទីព្រឹក', en: '6:00 AM' },
+    time7am: { km: '៧:០០នាទីព្រឹក', en: '7:00 AM' },
+    time8am: { km: '៨:០០នាទីព្រឹក', en: '8:00 AM' },
+    time830am: { km: '៨:៣០នាទីព្រឹក', en: '8:30 AM' },
+    time9am: { km: '៩:០០នាទីព្រឹក', en: '9:00 AM' },
+    time1030am: { km: '១០:៣០នាទីព្រឹក', en: '10:30 AM' },
+    time12noon: { km: '១២:០០ថ្ងៃត្រង់', en: '12:00 PM' },
+    time5pm: { km: '១៧:០០នាទីល្ងាច', en: '5:00 PM' },
+    time6pm: { km: '៦:០០នាទីល្ងាច', en: '6:00 PM' },
+    ceremonyProcession: { km: 'ពិធីក្រុងពាលី', en: 'Processional Ceremony' },
+    ceremonyBlessing: { km: 'ពិធីហែជំនូន (កំណត់)', en: 'Groom\'s Procession (Hai Goan Gomloh)' },
+    ceremonyHairCut: { km: 'ពីធីរៀបរាប់ផ្លែឈើ និងបំពាក់ចិញ្ជៀន', en: 'Fruit Arrangement & Ring Ceremony' },
+    ceremonyAncestor: { km: 'ពិធិសូត្រមន្តចម្រើនព្រះបរិត្ត', en: 'Monk\'s Blessing Ceremony' },
+    ceremonySevenRotations: { km: 'ពិធីកាត់សក់បង្កក់សិរី', en: 'Hair Cutting Ceremony (Gaat Sah)' },
+    ceremonyStringTying: { km: 'ពិធិសំពះពេលា បើកវាំងនន បាចផ្កាស្លា បង្វិលពពិល ពិធីគួចចំណងដៃព្រះថោងតោងស្បៃនាងនាគ', en: 'Sompeas Pelea Ceremony, Unveiling Ceremony, Areca Flower Scattering Ceremony (Baach Phka Sla), Passing of Blessings (Bongvul Prompel), Hand-Tying, Preah Thong and Neang Neak Ceremony' },
+    ceremonyLunch: { km: 'អញ្ជើញភ្ញៀវពិសារអាហារថ្ងៃត្រង់', en: 'Guests enjoy the lunch banquet.' },
+    ceremonyGuestReception: { km: 'អញ្ជើញភ្ញៀវពិសារអាហារពេលល្ងាច', en: 'Gala-Dinner and After Party Celebration' },
+    countdownTitle: { km: 'រាប់ថយក្រោយទៅថ្ងៃមង្គល', en: 'Countdown to the big day' },
+    labelDays: { km: 'ថ្ងៃ', en: 'Days' },
+    labelHours: { km: 'ម៉ោង', en: 'Hours' },
+    labelMinutes: { km: 'នាទី', en: 'Minutes' },
+    labelSeconds: { km: 'វិនាទី', en: 'Seconds' },
+    weddingDateText: { km: 'ថ្ងៃទី ២៨ ខែ មករា ឆ្នាំ ២០២៦', en: '28 January 2026' },
+    calendarButtonText: { km: 'កត់ទុកក្នុងប្រតិទិន', en: 'Save to calendar' },
+    albumTitle: { km: 'វិចិត្រសាល', en: 'Gallery' },  //////
+    wishTitle: { km: 'សារជូនពរដល់គូស្វាមីភរិយាថ្មី', en: 'Write a wish to a new married couple' },
+    labelGuestName: { km: 'ឈ្មោះរបស់អ្នក', en: 'Your name' },
+    placeholderGuestName: { km: 'ឈ្មោះរបស់អ្នក', en: 'Your Name' },
+    labelWishMessage: { km: 'សារជូនពរ', en: 'Wish message' },
+    placeholderWishMessage: { km: 'សរសេរសារ...', en: 'Write your message...' },
+    submitWish: { km: 'ផ្ញើសារជូនពរ', en: 'Send wish' },
+    wishesSubtitle: { km: 'សារជូនពរ', en: 'Wishing' },
+    seeMore: { km: 'មើលសារបន្ថែម', en: 'See more wishes' },
+    countdownComplete: { km: 'ដល់ថ្ងៃមង្គលហើយ!', en: "It's wedding day!" },
+    loadingWishes: { km: 'កំពុងទាញយក...', en: 'Loading...' },
+    noWishes: { km: 'មិនមានសារលឹក', en: 'No messages yet.' },
+    offline: { km: 'មិនមានការតភ្ជាប់អ៊ីនធឺណេត', en: 'No internet connection.' },
+    sendingWish: { km: 'កំពុងផ្ញើ...', en: 'Sending...' },
+    emptyMessageAlert: { km: 'សូមវាយបញ្ចូលសារ', en: 'Please enter a message' },
+    appreciationTitle: { km: 'សេចក្ដីថ្លែងអំណរគុណ និងសូមអភ័យទោស', en: 'Thank You & Our Sincere Apology' },
+    appreciationMessage: { km: 'យើងខ្ញុំជាមាតាបិតា កូនទាំងពីរ សូមថ្លែងអំណរគុណ យ៉ាងជ្រាលជ្រៅចំពោះវត្តមានដ៏ឧត្តុង្គឧត្តមរបស់​ សម្ដេច ទ្រង់ ឯកឧត្តម​ លោកជំទាវ លោកអ្នកឧកញ៉ា អ្នកឧកញ៉ា ឧកញ៉ា លោក​​ លោកស្រី អ្នកនាងកញ្ញា ដែលបានអញ្ជើញចូលរួមជាកិត្តិយសក្នុងពិធីសិរីសួស្ដីអាពាហ៍ពិពាហ៍ កូនប្រុស កូនស្រី របស់យើងខ្ញុំនាពេលខាងមុខនេះ។​ យើងខ្ញុំសូមការខន្តីអភ័យទោស ដែលពុំបានជូនលិខិតអញ្ជើញនេះដោយផ្ទាល់។​ ដោយគាវរកិច្ចដ៏ខ្ពង់ខ្ពស់ពីយើងខ្ញុំ​។​', en: 'We, the parents of the bride and groom, would like to express our deepest gratitude and heartfelt appreciation for the honorable presence of Samdech, His Excellency, Lok Chumteav, Lok Neak Oknha, Neak Oknha, Lok Oknha, Oknha, ladies and gentlemen, who have graciously attended and honored the upcoming wedding ceremony of our beloved son and daughter. We sincerely apologize for not being able to deliver this invitation to you in person. With our highest respects.' }
+};
+
+let currentLanguage = 'km';
+
+const t = (key, fallback = '') => translations[key]?.[currentLanguage] || fallback;
+
+// =========================================================
+// ENGLISH FONT CONFIGURATION - EASY TO CUSTOMIZE
+// =========================================================
+const englishFontConfig = {
+    // Keys with Kugile_Demo font (special styling) - MODIFY FONT SIZES HERE
+    special: {
+        keys: ['honorInvite', 'brideName', 'groomName', 'albumTitle', 'mainCeremony', 'appreciationTitle','agendaTitle',
+             'wishTitle', 'countdownTitle', 'wishesSubtitle','groomName1','groomName', 'brideName1','brideName'],
+        fontFamily: "'EnglishSpecial', sans-serif",
+        fontSize: {
+            'honorInvite': '1.1em',      // Change this to adjust font size
+            'brideName': '1.2em',        // Change this to adjust font size
+            'groomName': '1.4em',        // Change this to adjust font size
+            'albumTitle': '2em',       // Change this to adjust font size
+            'mainCeremony': '1.1em' ,    // Change this to adjust font size
+            'appreciationTitle': '0.9em',   // Change this to adjust font size
+            'agendaTitle': '1.2em'   ,    // Change this to adjust font size
+            'wishTitle': '0.9em',      // Change this to adjust font size
+            'countdownTitle': '1.2em',     // Change this to adjust font size
+            'wishesSubtitle': '1.2em',     // Change this to adjust font size
+            'groomName1': '1.2em' ,        // Change this to adjust font size
+            'groomName': '1.2em' ,         // Change this to adjust font size
+            'brideName1': '1.2em' ,        // Change this to adjust font size
+            'brideName': '1.2em'           // Change this to adjust font size
+            
+            
+
+        }
+    },
+    // Standard Crimson-Roman font - MODIFY FONT SIZE HERE
+    standard: {
+        fontFamily: "'EnglishStandard', sans-serif",
+        fontSize: {
+            'invitationBody': '1em',      // Body text
+            'parentTitleFemale': '0.8em',    // Parent title
+            'parentNamePlaceholder1': '0.9em',  // Parent name
+            'parentTitle2': '0.8em',         // Parent title
+            'parentNamePlaceholder2': '0.9em',  // Parent name
+            'parentTitle3': '0.8em',         // Parent title
+            'parentNamePlaceholder3': '0.9em',  // Parent name
+            'takingPlace': '0.9em',          // Taking place text
+            'weddingDate': '0.95em',         // Wedding date
+            'venueName': '0.85em',           // Venue name
+            'startTime': '0.9em',            // Start time
+            'locationTitle': '1em',          // Location title
+            'scanMap': '0.8em',              // Scan map text
+            'viewMap': '0.85em',             // View map button
+            'agendaDate': '0.8em',           // Agenda date
+            'agendaPeriod': '0.85em',        // Agenda period
+            'time6am': '0.9em',              // Time display
+            'time6pm': '0.9em',              // Time display
+            'ceremonyProcession': '0.9em',  // Ceremony items
+            'ceremonyBlessing': '0.9em',
+            'ceremonyHairCut': '0.9em',
+            'ceremonyAncestor': '0.9em',
+            'ceremonySevenRotations': '0.9em',
+            'ceremonyStringTying': '0.9em',
+            'ceremonyLunch': '0.9em',
+            'ceremonyGuestReception': '0.9em',
+            'labelDays': '0.8em',            // Countdown labels
+            'labelHours': '0.8em',
+            'labelMinutes': '0.8em',
+            'labelSeconds': '0.8em',
+            'weddingDateText': '0.8em',      // Wedding date text
+            'calendarButtonText': '0.8em',   // Calendar button
+            'labelGuestName': '0.85em',      // Wish form labels
+            'placeholderGuestName': '0.85em',
+            'labelWishMessage': '0.85em',
+            'placeholderWishMessage': '0.85em',
+            'submitWish': '0.85em',          // Submit button
+            'seeMore': '0.8em',              // See more button
+            'countdownComplete': '1em',      // Countdown complete
+            'loadingWishes': '0.8em',        // Loading text
+            'noWishes': '0.85em',            // No wishes text
+            'offline': '0.85em',             // Offline message
+            'sendingWish': '0.85em',         // Sending message
+            'emptyMessageAlert': '0.85em',   // Alert message
+            'appreciationMessage': '0.9em',  // Appreciation text
+            'agendaPeriodMorning': '0.9em', // Agenda period morning
+            'agendaPeriodEvening': '0.9em', // Agenda period evening
+            'appreciationMessage': '1em'  // Appreciation text
+        },
+        defaultFontSize: '0.9em'  // Default size for any key not listed above
+    },
+    
+};
+
+const applyLanguage = (lang = 'km') => {
+    currentLanguage = lang;
+    document.documentElement.setAttribute('lang', 'km');
+
+    const title = translations.pageTitle?.['km'];
+    if (title) document.title = title;
+
+    // Always display Khmer with English translations
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        const kmValue = translations[key]?.['km'];
+        const enValue = translations[key]?.['en'];
+        
+        if (kmValue === undefined) return;
+
+        // Display Khmer text
+        el.textContent = kmValue;
+        
+        // Store English translation in a data attribute for display via CSS
+        if (enValue) {
+            el.setAttribute('data-i18n-en', enValue);
+        }
+        
+        // Apply font styles for Khmer
+        el.style.fontFamily = "";
+        el.style.fontSize = "";
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const placeholderKey = el.dataset.i18nPlaceholder;
+        const value = translations[placeholderKey]?.['km'];
+        if (value !== undefined) {
+            el.setAttribute('placeholder', value);
+        }
+    });
+};
+
+// =========================================================
+// URL PERSONALIZATION LOGIC
+// =========================================================
+document.addEventListener('DOMContentLoaded', () => {
+    // =========================================================
+    // WISHES/COMMENTS SECTION
+    // =========================================================
+    const wishesList = document.getElementById('wishesList');
+    const seeMoreBtn = document.getElementById('seeMoreBtn');
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzDzcd9yZPHjWj8u_2hNwm4tJDnyvGkX1Bik-jSb3OBx26Q_WkxMACDWjXJLvtdrbZu/exec';
+
+    const savedLanguage = localStorage.getItem('preferredLanguage') || 'km';
+    applyLanguage(savedLanguage);
+    
+    // Load from Google Sheets (online storage)
+    let allWishes = [];
+    let currentLimit = 5;
+    let isLoading = false;
+    
+    // Fetch all wishes from Google Sheets
+    async function loadAllWishesFromSheets() {
+        if (isLoading) return;
+        isLoading = true;
+        wishesList.innerHTML = `<p style="color: #f1d577;">${t('loadingWishes', 'Loading...')}</p>`;
+        
+        try {
+            console.log('Fetching from:', SCRIPT_URL);
+            const response = await fetch(SCRIPT_URL, {
+                method: 'GET',
+                mode: 'cors',
+                cache: 'no-cache'
+            });
+            
+            console.log('Response status:', response.status);
+            if (!response.ok) {
+                console.error('Response status:', response.status);
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            console.log('Raw data from API:', data);
+            console.log('Data type:', typeof data);
+            console.log('Is array:', Array.isArray(data));
+            console.log('Data length:', data?.length);
+            
+            // Data is returned as an array directly from doGet
+            if (Array.isArray(data) && data.length > 0) {
+                console.log('Processing wishes...');
+                console.log('First item structure:', data[0]);
+                
+                // Filter out blank/empty messages with better validation
+                allWishes = data.filter(wish => {
+                    // Check if wish object exists
+                    if (!wish) return false;
+                    
+                    // Get message - handle different possible formats
+                    const message = wish.message || wish.Message || wish.msg || '';
+                    const name = wish.name || wish.Name || wish.guestName || '';
+                    
+                    // Convert to string if needed and check if not empty
+                    const messageStr = String(message).trim();
+                    const nameStr = String(name).trim();
+                    
+                    return messageStr.length > 0 && nameStr.length > 0;
+                }).map(wish => ({
+                    // Normalize the data structure
+                    name: String(wish.name || wish.Name || wish.guestName || ''),
+                    message: String(wish.message || wish.Message || wish.msg || ''),
+                    date: String(wish.date || wish.Date || new Date().toLocaleString('km-KH') || '')
+                }));
+                
+                console.log('Filtered wishes count:', allWishes.length);
+                console.log('All wishes:', allWishes);
+                currentLimit = 5;
+                renderWishes();
+                console.log('Wishes rendered successfully');
+            } else {
+                console.log('No API wishes, checking localStorage...');
+                // Fallback to localStorage wishes if API returns empty
+                const localWishes = JSON.parse(localStorage.getItem('localWishes') || '[]');
+                if (localWishes.length > 0) {
+                    console.log('Found local wishes:', localWishes);
+                    allWishes = localWishes;
+                    currentLimit = 5;
+                    renderWishes();
+                } else {
+                    wishesList.innerHTML = `<p style="color: #f1d577;">${t('noWishes', 'No messages yet.')}</p>`;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading wishes:', error);
+            console.error('Error message:', error.message);
+            console.error('SCRIPT_URL:', SCRIPT_URL);
+            // Show "no messages" instead of error to avoid confusion
+            wishesList.innerHTML = `<p style="color: #f1d577;">Debug Info: ${error.message}<br>Check console (F12) for details</p>`;
+        }
+        isLoading = false;
+    }
+    
+    // Load wishes on page load
+    loadAllWishesFromSheets();
+
+    // --- The Intersection Observer ---
+    const wishObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                // Add class to fade in
+                entry.target.classList.add('show');
+            } else {
+                // Remove class to fade out when scrolling away
+                entry.target.classList.remove('show');
+            }
+        });
+    }, {
+        threshold: 0.1 // Trigger when 10% of the card is visible
+    });
+
+    function renderWishes() {
+        wishesList.innerHTML = ''; 
+        const visibleWishes = allWishes.slice(0, currentLimit);
+
+        visibleWishes.forEach((wish) => {
+            const card = document.createElement('div');
+            card.className = 'wish-card';
+            card.innerHTML = `
+                <span class="wish-guest-name">${wish.name}</span>
+                <div class="wish-text-content">${wish.message}</div>
+                <span class="wish-date-time">${wish.date}</span>
+            `;
+            
+            wishesList.appendChild(card);
+            
+            // Start watching this specific card for scroll
+            wishObserver.observe(card);
+        });
+
+        if (allWishes.length > currentLimit) {
+            seeMoreBtn.style.display = 'block';
+        } else {
+            seeMoreBtn.style.display = 'none';
+        }
+    }
+
+    // Function to add only the new wish card without re-rendering everything
+    function addNewWishCard(wish) {
+        const card = document.createElement('div');
+        card.className = 'wish-card new-wish';
+        card.innerHTML = `
+            <span class="wish-guest-name">${wish.name}</span>
+            <div class="wish-text-content">${wish.message}</div>
+            <span class="wish-date-time">${wish.date}</span>
+        `;
+        
+        // Insert at the top of the list
+        wishesList.insertBefore(card, wishesList.firstChild);
+        
+        // Watch this card for scroll fade-in
+        wishObserver.observe(card);
+        
+        // Add fade-in effect
+        setTimeout(() => {
+            card.classList.add('show');
+        }, 10);
+    }
+
+    // --- "See more wish" Button ---
+    seeMoreBtn.addEventListener('click', () => {
+        currentLimit += 5;
+        renderWishes();
+    });
+
+    // --- Form Submission (will be consolidated below) ---
+
+    renderWishes();
+    
+    // Google Sheets Configuration
+    // Replace with your Google Sheet ID
+    const GOOGLE_SHEET_ID = '1ZGsLXEYqLWg7Ax_PAvdgxxMIa-DY1WGc_fecNMYnV0w';
+    const SHEET_NAME = 'Sheet1'; // Change if your sheet has a different name
+    
+    // Build Google Sheets CSV export URL
+    const googleSheetsUrl = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}`;
+    
+    // Function to load guest names from Google Sheets
+    async function loadGuestNamesFromSheet() {
+        try {
+            const response = await fetch(googleSheetsUrl);
+            const csvText = await response.text();
+            const lines = csvText.trim().split('\n');
+            
+            const guestNameMap = {};
+            
+            // Proper CSV parser function
+            function parseCSVLine(line) {
+                const result = [];
+                let current = '';
+                let insideQuotes = false;
+                
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    const nextChar = line[i + 1];
+                    
+                    if (char === '"') {
+                        if (insideQuotes && nextChar === '"') {
+                            current += '"';
+                            i++;
+                        } else {
+                            insideQuotes = !insideQuotes;
+                        }
+                    } else if (char === ',' && !insideQuotes) {
+                        result.push(current.trim());
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                result.push(current.trim());
+                return result;
+            }
+            
+            // Skip header row (row 0) and process data rows
+            for (let i = 1; i < lines.length; i++) {
+                if (lines[i].trim() === '') continue; // Skip empty lines
+                
+                const cells = parseCSVLine(lines[i]);
+                if (cells.length >= 3) {
+                    const urlKey = cells[1].replace(/^"(.*)"$/, '$1').trim();      // Column B: English name (URL key)
+                    const displayName = cells[2].replace(/^"(.*)"$/, '$1').trim(); // Column C: Khmer name (display)
+                    if (urlKey && displayName) {
+                        guestNameMap[urlKey] = displayName;
+                        console.log(`Loaded: ${urlKey} => ${displayName}`);
+                    }
+                }
+            }
+            
+            console.log("Loaded guest names from Google Sheets:", guestNameMap);
+            return guestNameMap;
+        } catch (error) {
+            console.error("Failed to load from Google Sheets:", error);
+            // Fallback to empty map - URL encoded names will still work
+            return {};
+        }
+    }
+    
+    // Load guest names and process URL parameter
+    loadGuestNamesFromSheet().then(guestNameMap => {
+        // 1. Look for the name in the URL (?to=ReadableKey)
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestKey = urlParams.get('to');
+
+        console.log("Checking for guest name in URL...");
+
+        if (guestKey) {
+            // Check if it's a readable key first, then fallback to URL-encoded format
+            let cleanName = guestNameMap[guestKey] || guestKey.replace(/[\+_]/g, ' ');
+            console.log("Found guest name:", cleanName);
+
+            // 2. Update Page 1 Name
+            const page1Element = document.getElementById('page1-guest-name');
+            if (page1Element) {
+                page1Element.innerText = cleanName;
+                console.log("Successfully updated Page 1 text.");
+            } else {
+                console.error("Could not find the ID 'page1-guest-name' in your HTML!");
+            }
+
+            // 3. Update Page 2 Wish Form Input (if it exists)
+            const formInput = document.getElementById('guestName');
+            if (formInput) {
+                formInput.value = cleanName;
+                formInput.setAttribute('readonly', true);
+            }
+        } else {
+            console.log("No 'to' parameter found in the URL. Showing default name.");
+        }
+    });
+    
+    // === DOM ELEMENT SELECTION ===
+    const entrancePage = document.getElementById('entrance-page');
+    const enterButton = document.getElementById('enter-button');
+    const transitionOverlay = document.getElementById('transition-overlay');
+    const transitionVideo = document.getElementById('transition-video');
+    const bgMusic = document.getElementById('bg-music');
+    const page2Main = document.getElementById('page-2-main');
+    const invitationBox = document.querySelector('.main-invitation-box');
+    
+    // === GLOBAL VARIABLES ===
+    const weddingDate = new Date("March 28, 2026 06:30:00").getTime();
+    let musicStarted = false;
+
+    // 💥 IMPORTANT: REPLACE THIS URL with your actual Sheet Monkey/SheetDB API URL 💥
+    const WISH_API_URL = 'YOUR_API_SUBMISSION_ENDPOINT_HERE'; 
+
+
+    // =========================================================
+    // 0. STAGGERED REVEAL FOR ENTRANCE PAGE CONTENT
+    // =========================================================
+
+    function revealEntrancePage() {
+        document.querySelectorAll('#entrance-page .fade-in-item').forEach((item, index) => {
+            item.style.transitionDelay = `${index * 0.15}s`; 
+            item.classList.add('is-visible');
+        });
+    }
+    revealEntrancePage(); 
+
+    // =========================================================
+    // 1. ENTRANCE LOGIC
+    // =========================================================
+
+    if (enterButton) {
+        enterButton.addEventListener('click', () => {
+            if (entrancePage) entrancePage.style.display = 'none';
+            if (transitionOverlay) {
+                transitionOverlay.style.display = 'flex';
+                // Start with fade-from-white class (overlay invisible)
+                transitionOverlay.classList.add('fade-from-white');
+            }
+            
+            // Play video and audio, then fade in the transition
+            setTimeout(() => {
+                const bgVideo = document.getElementById('global-bg-video');
+                if (bgVideo) {
+                    bgVideo.play().catch(e => console.log("BG video autoplay failed:", e));
+                }
+
+                // Ensure background music continues playing during transition
+                if (bgMusic && bgMusic.paused) {
+                    bgMusic.play().catch(e => {
+                        // Silently handle if music can't play
+                    });
+                }
+
+                if (transitionVideo) {
+                    transitionVideo.currentTime = 0;
+                    transitionVideo.play();
+                }
+
+                // Note: Music autoplay is handled by the DOMContentLoaded event listener
+                // to ensure it's triggered with highest priority
+                
+                // Remove fade-from-white to reveal the transition (fade in effect)
+                if (transitionOverlay) {
+                    transitionOverlay.classList.remove('fade-from-white');
+                }
+            }, 100);
+        });
+    }
+
+    // =========================================================
+    // 2. TRANSITION END LOGIC
+    // =========================================================
+
+    if (transitionVideo) {
+        transitionVideo.onended = () => {
+            // Trigger fade to white effect
+            if (transitionOverlay) {
+                transitionOverlay.classList.add('fade-to-white');
+                
+                // Hide transition overlay and show page 2 after white fade completes
+                setTimeout(() => {
+                    if (transitionOverlay) transitionOverlay.style.display = 'none';
+                    if (page2Main) page2Main.style.display = 'block';
+                    document.body.style.overflowY = 'scroll'; 
+
+                    // Show page 2 background and fade it in
+                    const page2Bg = document.getElementById('page-2-bg');
+                    if (page2Bg) {
+                        page2Bg.style.display = 'block';
+                        // Trigger fade-in effect with slight delay for smooth transition
+                        setTimeout(() => {
+                            page2Bg.classList.add('fade-in-bg');
+                        }, 50);
+                    }
+
+                    if (invitationBox) invitationBox.classList.add('border-fade-in');
+                    
+                    setupScrollReveal();
+                }, 500); // Match the 0.5s fade-to-white transition
+            }
+        };
+    }
+
+    // =========================================================
+    // 3. SCROLL REVEAL IMPLEMENTATION
+    // =========================================================
+
+    function setupScrollReveal() {
+        const observerOptions = {
+            root: null, 
+            rootMargin: '0px',
+            threshold: 0.1 
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                const element = entry.target;
+                
+                if (entry.isIntersecting) {
+                    element.style.transitionDelay = '0s';
+                    setTimeout(() => {
+                        element.classList.add('is-visible');
+                    }, 10);
+                } else {
+                    element.classList.remove('is-visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('#page-2-main .fade-in-item').forEach((item) => {
+            item.style.transitionDelay = '0s'; 
+            observer.observe(item);
+        });
+    }
+    
+    // =========================================================
+    // 4. COUNTDOWN TIMER LOGIC
+    // =========================================================
+  // Function to convert English numbers to Khmer digits
+function toKhmerNumber(num) {
+    const khmerDigits = ['០', '១', '២', '៣', '៤', '៥', '៦', '៧', '៨', '៩'];
+    return num.toString().split('').map(digit => khmerDigits[digit] || digit).join('');
+}
+
+// 1. SET THE TARGET DATE: February 28, 2026
+const targetDate = new Date("February 28, 2026 00:00:00").getTime();
+
+const formatNumberForLang = (num) => {
+    const padded = num < 10 ? `0${num}` : `${num}`;
+    return currentLanguage === 'km' ? toKhmerNumber(padded) : padded;
+};
+
+function updateWeddingCountdown() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    // Time calculations
+    const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // 2. GET ELEMENTS BY ID
+    const dElem = document.getElementById("days");
+    const hElem = document.getElementById("hours");
+    const mElem = document.getElementById("minutes");
+    const sElem = document.getElementById("seconds");
+
+    // 3. UPDATE ONLY IF ELEMENTS EXIST
+    if (dElem && hElem && mElem && sElem) {
+        dElem.innerText = formatNumberForLang(d);
+        hElem.innerText = formatNumberForLang(h);
+        mElem.innerText = formatNumberForLang(m);
+        sElem.innerText = formatNumberForLang(s);
+    } else {
+        console.log("Countdown elements not found! Check your HTML IDs.");
+    }
+
+    // If countdown is finished
+    if (distance < 0) {
+        clearInterval(countdownInterval);
+        const timerGrid = document.querySelector(".timer-grid");
+        if (timerGrid) timerGrid.innerHTML = `<h3>${t('countdownComplete', 'It\'s wedding day!')}</h3>`;
+    }
+}
+
+// Run every second
+const countdownInterval = setInterval(updateWeddingCountdown, 1000);
+
+// Run once immediately so it doesn't wait 1 second to start
+updateWeddingCountdown();
+    // =========================================================
+    // 5. ADD TO CALENDAR LOGIC
+    // =========================================================
+
+    function setupCalendarLink() {
+        const title = "ពិធីមង្គលអាពាហ៍ពិពាហ៍ | ឃុន ខាយស៊ីន & ពេជ្រ ម៉ានីកា";
+        const description = "សូមគោរពអញ្ជើញលោក លោកស្រី ចូលរួមពិធីមង្គលអាពាហ៍ពិពាហ៍កូនប្រុស កូនស្រីរបស់យើងខ្ញុំ។";
+        const location = "ដឹ ព្រេមៀ សេនធ័រ សែនសុខ (អាគារ D&E)";
+        const startDateTime = "20260328T063000";
+        const endDateTime = "20260328T143000";
+        
+        const googleCalendarLink = `https://calendar.google.com/calendar/r/eventedit?text=${encodeURIComponent(title)}&dates=${startDateTime}/${endDateTime}&details=${encodeURIComponent(description)}&location=${encodeURIComponent(location)}`;
+
+        const calendarButton = document.getElementById('add-to-calendar');
+        if(calendarButton) {
+            calendarButton.href = googleCalendarLink;
+        }
+    }
+    setupCalendarLink();
+
+
+    // =========================================================
+    // 6. PERSONALIZED GREETING HANDLER (CRITICAL FIX)
+    // =========================================================
+
+
+
+document.getElementById('wishForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // STOP the page refresh and URL message appearance
+    
+    const name = document.getElementById('guestName').value;
+    const message = document.getElementById('wishMessage').value;
+    const btn = document.getElementById('submitBtn');
+    const wishesList = document.getElementById('wishesList');
+    
+    if (!message.trim()) {
+        alert(t('emptyMessageAlert', 'Please enter a message'));
+        return;
+    }
+    
+    btn.disabled = true;
+    btn.innerText = t('sendingWish', 'Sending...');
+
+    // Send to Google Sheets API only (no localStorage)
+    const date = new Date().toLocaleString('km-KH');
+
+    // Send to API
+    fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ name: name, message: message, date: date })
+    })
+    .then(response => {
+        console.log('Wish submitted successfully');
+        // Reset form - clear only the message (keep guest name)
+        document.getElementById('wishMessage').value = "";
+        btn.disabled = false;
+        btn.innerText = t('submitWish', 'Send wish');
+        
+        // Create the new wish object
+        const newWish = {
+            name: name,
+            message: message,
+            date: date
+        };
+        
+        // Add the new wish to the top of the array
+        allWishes.unshift(newWish);
+        console.log('New wish added to display:', newWish);
+        
+        // Save to localStorage as backup
+        const localWishes = JSON.parse(localStorage.getItem('localWishes') || '[]');
+        localWishes.unshift(newWish);
+        localStorage.setItem('localWishes', JSON.stringify(localWishes));
+        console.log('Saved to localStorage:', localWishes);
+        
+        // Just add the new wish card (don't re-render entire list)
+        addNewWishCard(newWish);
+        console.log('New wish displayed');
+    })
+    .catch(error => {
+        console.error('Error submitting wish:', error);
+        btn.disabled = false;
+        btn.innerText = t('submitWish', 'Send wish');
+    });
+});
+
+    // =========================================================
+    // 8. IMAGE LIGHTBOX/GALLERY LOGIC
+    // =========================================================
+
+    const albumImages = document.querySelectorAll("#wedding-album .album-photo");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImage");
+    const lightboxClose = document.getElementById("lightboxClose");
+    let currentIndex = 0;
+
+    if (albumImages.length > 0 && lightbox) {
+        albumImages.forEach((img, index) => {
+            img.addEventListener("click", () => {
+                currentIndex = index;
+                openLightbox();
+            });
+        });
+
+        function openLightbox() {
+            lightbox.style.display = "flex";
+            if (lightboxImg) {
+                lightboxImg.classList.remove("show");
+                setTimeout(() => {
+                    lightboxImg.src = albumImages[currentIndex].src;
+                    lightboxImg.classList.add("show");
+                }, 10);
+            }
+        }
+
+        if (lightboxClose) {
+            lightboxClose.addEventListener("click", () => {
+                lightbox.style.display = "none";
+            });
+        }
+
+        let startX = 0;
+        let isDown = false;
+        let dragStartX = 0;
+
+        lightbox.addEventListener("touchstart", (e) => {
+            startX = e.touches[0].clientX;
+        });
+
+        lightbox.addEventListener("touchend", (e) => {
+            let endX = e.changedTouches[0].clientX;
+            let diff = startX - endX;
+            if (diff > 50) swipeNext();
+            if (diff < -50) swipePrev();
+        });
+
+        lightbox.addEventListener("mousedown", (e) => {
+            isDown = true;
+            dragStartX = e.clientX;
+        });
+
+        lightbox.addEventListener("mousemove", (e) => {
+            if (!isDown) return;
+            e.preventDefault(); 
+        });
+
+        lightbox.addEventListener("mouseup", (e) => {
+            if (!isDown) return;
+            isDown = false;
+            let diff = dragStartX - e.clientX;
+            if (diff > 50) swipeNext();
+            if (diff < -50) swipePrev();
+        });
+        
+        lightbox.addEventListener("mouseleave", () => {
+            isDown = false;
+        });
+
+        function swipeNext() {
+            if (!lightboxImg || currentIndex >= albumImages.length - 1) return;
+            lightboxImg.classList.remove("show");
+            animateSwipe("left");
+            currentIndex++;
+            setTimeout(() => {
+                lightboxImg.classList.remove("swipe-left");
+                lightboxImg.src = albumImages[currentIndex].src;
+                setTimeout(() => {
+                    lightboxImg.classList.add("show");
+                }, 20);
+            }, 320);
+        }
+
+        function swipePrev() {
+            if (!lightboxImg || currentIndex <= 0) return;
+            lightboxImg.classList.remove("show");
+            animateSwipe("right");
+            currentIndex--;
+            setTimeout(() => {
+                lightboxImg.classList.remove("swipe-right");
+                lightboxImg.src = albumImages[currentIndex].src;
+                setTimeout(() => {
+                    lightboxImg.classList.add("show");
+                }, 20);
+            }, 320);
+        }
+
+        function animateSwipe(direction) {
+            if (lightboxImg) {
+                lightboxImg.classList.add(direction === "left" ? "swipe-left" : "swipe-right");
+            }
+        }
+    }
+    
+});
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Select the elements
+    const audio = document.getElementById('bg-music');
+    const page1ToggleButton = document.getElementById('page1-music-toggle-button');
+    const page2ToggleButton = document.getElementById('music-toggle-button');
+    const entranceButton = document.getElementById('enter-button');
+    const entrancePage = document.getElementById('entrance-page');
+
+    if (!audio) {
+        console.warn("Music element missing.");
+        return;
+    }
+
+    // Detect if device is mobile
+    const isMobileDevice = () => {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    };
+    
+    const isMobile = isMobileDevice();
+    console.log("Device type:", isMobile ? "Mobile" : "Desktop");
+
+    // Initialize audio: start muted on page load
+    audio.muted = true;
+    audio.volume = 0.5;
+    let musicStarted = false;
+
+    // --- Utility Functions ---
+
+    // Checks if the audio is muted
+    const isMuted = () => audio.muted;
+
+    // Updates the button icon for page 1
+    const updatePage1ButtonIcon = () => {
+        if (page1ToggleButton) {
+            if (isMuted()) {
+                page1ToggleButton.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                page1ToggleButton.title = 'Unmute background music';
+            } else {
+                page1ToggleButton.innerHTML = '<i class="fas fa-volume-up"></i>';
+                page1ToggleButton.title = 'Mute background music';
+            }
+        }
+    };
+
+    // Updates the button icon for page 2
+    const updatePage2ButtonIcon = () => {
+        if (page2ToggleButton) {
+            if (isMuted()) {
+                page2ToggleButton.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                page2ToggleButton.title = 'Unmute background music';
+            } else {
+                page2ToggleButton.innerHTML = '<i class="fas fa-volume-up"></i>';
+                page2ToggleButton.title = 'Mute background music';
+            }
+        }
+    };
+    
+    // --- Main Logic ---
+
+    // 1. Page 1 Music Toggle Function (Mute/Unmute)
+    const togglePage1Music = () => {
+        if (isMuted()) {
+            audio.muted = false;
+            // When unmuting, ensure the music is playing
+            if (audio.paused) {
+                audio.play().catch(e => console.log("Play error:", e));
+            }
+        } else {
+            audio.muted = true;
+        }
+        updatePage1ButtonIcon();
+    };
+
+    // 2. Page 2 Music Toggle Function (Mute/Unmute)
+    const togglePage2Music = () => {
+        if (isMuted()) {
+            audio.muted = false;
+            // When unmuting, ensure the music is playing
+            if (audio.paused) {
+                audio.play().catch(e => console.log("Play error:", e));
+            }
+        } else {
+            audio.muted = true;
+        }
+        updatePage2ButtonIcon();
+    };
+
+    // 3. Play Music on Entrance Button Click
+    if (entranceButton) {
+        entranceButton.addEventListener('click', () => {
+            // Unmute the music when decorative button is clicked
+            if (audio) {
+                audio.muted = false;
+                // Ensure music is playing
+                if (audio.paused) {
+                    audio.play().catch(e => console.log("Play error on entrance:", e));
+                }
+                musicStarted = true;
+                updatePage2ButtonIcon();
+                console.log("Music unmuted successfully");
+            }
+            
+            // Hide page 1 music button after decorative button is clicked with 0.8s fade-out
+            if (page1ToggleButton) {
+                page1ToggleButton.classList.add('fade-out');
+                setTimeout(() => {
+                    if (page1ToggleButton) {
+                        page1ToggleButton.style.display = 'none';
+                    }
+                }, 800);
+            }
+        });
+        
+        // Initialize page 1 button icon (show mute since audio is muted)
+        updatePage1ButtonIcon();
+    } else {
+         console.error("Entrance button not found. Please check the ID.");
+    }
+
+    // 4. Attach Page 1 Toggle Listener
+    if (page1ToggleButton) {
+        page1ToggleButton.addEventListener('click', togglePage1Music);
+    }
+
+    // 5. Attach Page 2 Toggle Listener
+    if (page2ToggleButton) {
+        page2ToggleButton.addEventListener('click', togglePage2Music);
+    }
+
+    // 6. Start Audio - Initialize with muted autoplay
+    // =========================================================
+    // BROWSER AUTOPLAY POLICY COMPLIANCE SOLUTION
+    // =========================================================
+    // Modern browsers (Chrome, Safari, Firefox, Edge, Opera) block autoplay with sound
+    // unless the user has interacted with the page first.
+    //
+    // The solution is to:
+    // 1. Try to play muted audio immediately (this may still be blocked)
+    // 2. Listen for first user interaction (click, keypress, touch)
+    // 3. After user interaction, play audio with muted=true
+    // 4. After play succeeds, allow unmute on subsequent user clicks
+    // =========================================================
+    
+    let autoplayAttempted = false;
+    
+    const startAudio = () => {
+        if (!audio || autoplayAttempted) return;
+        autoplayAttempted = true;
+        
+        // Reset audio state
+        audio.currentTime = 0;
+        audio.muted = true;  // Start muted (required for browser autoplay policies)
+        audio.volume = 0.5;
+        
+        // Force audio element to be ready
+        audio.load();
+        
+        // Attempt to play the audio (muted for browser compliance)
+        const playPromise = audio.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                // Silent success - audio autoplay started
+                updatePage1ButtonIcon();
+                updatePage2ButtonIcon();
+            }).catch(error => {
+                // Autoplay blocked by browser (expected on initial load without user interaction)
+                // Audio will start automatically on first user interaction
+                
+                // Setup listener for first user interaction
+                const resumeAudioOnInteraction = () => {
+                    if (!audio) return;
+                    
+                    const resumePromise = audio.play();
+                    if (resumePromise !== undefined) {
+                        resumePromise.then(() => {
+                            // Audio successfully started after user interaction
+                            updatePage1ButtonIcon();
+                            updatePage2ButtonIcon();
+                            
+                            // Remove all interaction listeners after first success
+                            document.removeEventListener('click', resumeAudioOnInteraction);
+                            document.removeEventListener('keypress', resumeAudioOnInteraction);
+                            document.removeEventListener('touchstart', resumeAudioOnInteraction);
+                        }).catch(e => {
+                            // Silently handle if audio still can't play
+                        });
+                    }
+                };
+                
+                // Listen for first user interaction
+                document.addEventListener('click', resumeAudioOnInteraction, { once: true });
+                document.addEventListener('keypress', resumeAudioOnInteraction, { once: true });
+                document.addEventListener('touchstart', resumeAudioOnInteraction, { once: true });
+            });
+        }
+    };
+    
+    // Attempt autoplay immediately
+    startAudio();
+});
+
+
+// =========================================================
+// NAVIGATION MENU FUNCTIONALITY
+// =========================================================
+document.addEventListener('DOMContentLoaded', () => {
+    const menuToggleBtn = document.getElementById('menu-toggle-button');
+    const navigationMenu = document.getElementById('navigation-menu');
+    const menuItems = document.querySelectorAll('.menu-item');
+
+    // Toggle menu visibility
+    if (menuToggleBtn) {
+        menuToggleBtn.addEventListener('click', () => {
+            menuToggleBtn.classList.toggle('active');
+            navigationMenu.classList.toggle('active');
+        });
+    }
+
+    // Close menu when a menu item is clicked and smooth scroll to section
+    menuItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Close the menu
+            menuToggleBtn.classList.remove('active');
+            navigationMenu.classList.remove('active');
+            
+            // Smooth scroll to section
+            const targetId = item.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            
+            if (targetSection) {
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        const isMenuClick = navigationMenu.contains(e.target);
+        const isButtonClick = menuToggleBtn.contains(e.target);
+        
+        if (!isMenuClick && !isButtonClick && navigationMenu.classList.contains('active')) {
+            menuToggleBtn.classList.remove('active');
+            navigationMenu.classList.remove('active');
+        }
+    });
+});
+
+// =========================================================
+// GALLERY PHOTO FADE IN ON SCROLL
+// =========================================================
+document.addEventListener('DOMContentLoaded', () => {
+    const albumPhotos = document.querySelectorAll('.album-photo');
+    
+    const observerOptions = {
+        threshold: 0.15,
+        rootMargin: '0px 0px -80px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+            } else {
+                entry.target.classList.remove('animate');
+            }
+        });
+    }, observerOptions);
+    
+    albumPhotos.forEach(photo => {
+        observer.observe(photo);
+    });
+});
+
+// =========================================================
+// TIMELINE ITEMS FADE IN FROM RIGHT ON SCROLL
+// =========================================================
+document.addEventListener('DOMContentLoaded', () => {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    
+    const observerOptions = {
+        threshold: 0.2,
+        rootMargin: '0px 0px -100px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+            } else {
+                entry.target.classList.remove('animate');
+            }
+        });
+    }, observerOptions);
+    
+    timelineItems.forEach(item => {
+        observer.observe(item);
+    });
+});
